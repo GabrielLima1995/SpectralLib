@@ -54,7 +54,7 @@ async function hydrateExamples() {
 
       const output = document.createElement('pre');
       output.className = 'output';
-      output.textContent = 'Run para ver a saída';
+      output.textContent = ex.output?.trim() || 'Run para ver a saída';
 
       const actions = document.createElement('div');
       actions.className = 'example-actions';
@@ -66,7 +66,7 @@ async function hydrateExamples() {
         runBtn.disabled = true;
         runBtn.textContent = 'Running…';
         setTimeout(() => {
-          output.textContent = ex.output;
+          output.textContent = ex.output?.trim() || 'Resultado não disponível';
           runBtn.disabled = false;
           runBtn.textContent = 'Run example';
         }, 200);
