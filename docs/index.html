@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,36 +16,44 @@
       <span class="name">SpectralLib.jl</span>
     </div>
     <nav class="topnav">
-      <a href="#getting-started">Getting started</a>
-      <a href="#bases">Bases</a>
-      <a href="#examples">Examples</a>
-      <a href="#api">API</a>
+      <a href="#getting-started" data-i18n="nav.getting-started">Primeiros passos</a>
+      <a href="#bases" data-i18n="nav.bases">Bases</a>
+      <a href="#examples" data-i18n="nav.examples">Exemplos</a>
+      <a href="#api" data-i18n="nav.api">API</a>
     </nav>
-    <button class="theme-toggle" aria-label="Toggle theme">
-      <span class="sun">☀️</span>
-      <span class="moon">🌙</span>
-    </button>
+    <div class="top-actions">
+      <button class="lang-toggle" aria-label="Alternar idioma">English</button>
+      <button class="theme-toggle" aria-label="Toggle theme">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
   </header>
 
   <div class="layout">
     <aside class="sidebar">
       <div class="search">
-        <input type="search" placeholder="Search docs" aria-label="Search" />
+        <input
+          type="search"
+          placeholder="Buscar na documentação"
+          aria-label="Search"
+          data-i18n="search.placeholder"
+        />
       </div>
       <div class="toc">
-        <h3>Contents</h3>
+        <h3 data-i18n="sidebar.contents">Conteúdo</h3>
         <ul>
-          <li><a href="#intro">Introduction</a></li>
-          <li><a href="#getting-started">Getting started</a></li>
-          <li><a href="#bases">Spectral bases</a>
+          <li><a href="#intro" data-i18n="toc.intro">Introdução</a></li>
+          <li><a href="#getting-started" data-i18n="toc.getting-started">Primeiros passos</a></li>
+          <li><a href="#bases" data-i18n="toc.bases">Bases espectrais</a>
             <ul>
               <li><a href="#chebyshev">Chebyshev</a></li>
               <li><a href="#legendre">Legendre</a></li>
               <li><a href="#fourier">Fourier</a></li>
             </ul>
           </li>
-          <li><a href="#examples">Examples</a></li>
-          <li><a href="#api">API Reference</a></li>
+          <li><a href="#examples" data-i18n="toc.examples">Exemplos</a></li>
+          <li><a href="#api" data-i18n="toc.api">Referência da API</a></li>
         </ul>
       </div>
     </aside>
@@ -54,20 +62,20 @@
       <section class="hero" id="intro">
         <div>
           <p class="eyebrow">Docs • v0.1</p>
-          <h1>Fast spectral methods in Julia</h1>
-          <p class="lede">
+          <h1 data-i18n="hero.title">Métodos espectrais em Julia</h1>
+          <p class="lede" data-i18n="hero.lede">
             SpectralLib.jl agrupa os métodos espectrais do repositório em uma
             biblioteca Julia única, com transformadas, matrizes de
             diferenciação e pesos de quadratura prontos para usar.
           </p>
           <div class="cta-row">
-            <a class="btn primary" href="#getting-started">Start with Julia</a>
-            <a class="btn ghost" href="#examples">View examples</a>
+            <a class="btn primary" href="#getting-started" data-i18n="hero.cta-primary">Comece com Julia</a>
+            <a class="btn ghost" href="#examples" data-i18n="hero.cta-secondary">Ver exemplos</a>
           </div>
           <div class="badges">
-            <span>✔︎ Pure Julia</span>
-            <span>✔︎ Orthogonal polynomials</span>
-            <span>✔︎ Plot-ready grids</span>
+            <span data-i18n="hero.badge-julia">✔︎ 100% Julia</span>
+            <span data-i18n="hero.badge-orthogonal">✔︎ Polinômios ortogonais</span>
+            <span data-i18n="hero.badge-grids">✔︎ Malhas prontas para plotar</span>
           </div>
         </div>
         <div class="hero-card">
@@ -89,12 +97,12 @@ julia&gt; D = DS_Cheby(3)
 
       <section id="getting-started" class="card">
         <div class="section-header">
-          <h2>Getting started</h2>
-          <p>Instale a biblioteca e rode seu primeiro operador.</p>
+          <h2 data-i18n="start.title">Primeiros passos</h2>
+          <p data-i18n="start.subtitle">Instale a biblioteca e rode seu primeiro operador.</p>
         </div>
         <div class="grid two">
           <div>
-            <h3>Instalação</h3>
+            <h3 data-i18n="start.install">Instalação</h3>
             <pre><code class="code-block">pkg&gt; add SpectralLib</code></pre>
             <p>
               A biblioteca expõe os módulos <code>Chebyshev</code>,
@@ -104,7 +112,7 @@ julia&gt; D = DS_Cheby(3)
             </p>
           </div>
           <div>
-            <h3>Primeiro passo</h3>
+            <h3 data-i18n="start.first">Primeiro passo</h3>
             <pre><code class="code-block">using SpectralLib
 
 x = [-1.0, 0.0, 1.0]
@@ -120,13 +128,13 @@ f̂ = B * cos.(x)
 
       <section id="bases" class="card">
         <div class="section-header">
-          <h2>Spectral bases</h2>
-          <p>API consistente para polinômios ortogonais e séries trigonométricas.</p>
+          <h2 data-i18n="bases.title">Bases espectrais</h2>
+          <p data-i18n="bases.subtitle">API consistente para polinômios ortogonais e séries trigonométricas.</p>
         </div>
         <div class="grid three">
           <article class="panel" id="chebyshev">
             <h3>Chebyshev</h3>
-            <p>
+            <p data-i18n="bases.chebyshev">
               Transformada direta/inversa via FFT real, nós de Gauss/Lobatto/Radau
               e matrizes de diferenciação modais.
             </p>
@@ -137,7 +145,7 @@ z, w = ChebyQuadrature(-1, 1, 6, 2)
           </article>
           <article class="panel" id="legendre">
             <h3>Legendre</h3>
-            <p>
+            <p data-i18n="bases.legendre">
               Bases de Gauss, Lobatto e Radau, matrizes de integração e
               multiplicação e avaliação recursiva dos polinômios.
             </p>
@@ -147,7 +155,7 @@ J = JS_Leg(3)
           </article>
           <article class="panel" id="fourier">
             <h3>Fourier</h3>
-            <p>
+            <p data-i18n="bases.fourier">
               Diferenciação espectral, interpolação trigonométrica e quadratura
               para funções periódicas.
             </p>
@@ -160,17 +168,17 @@ vals = real_fft(sin.(x))
 
       <section id="examples" class="card">
         <div class="section-header">
-          <h2>Examples</h2>
-          <p>Exemplos extraídos diretamente de <code>examples/examples.jl</code>.</p>
-          <p class="muted" id="examples-status">Carregando exemplos…</p>
+          <h2 data-i18n="examples.title">Exemplos</h2>
+          <p data-i18n="examples.subtitle">Exemplos extraídos diretamente de <code>examples/examples.jl</code>.</p>
+          <p class="muted" id="examples-status" data-i18n="examples.status-loading">Carregando exemplos…</p>
         </div>
         <div id="examples-list" class="example-grid"></div>
       </section>
 
       <section id="api" class="card">
         <div class="section-header">
-          <h2>API Reference</h2>
-          <p>Principais funções expostas pela biblioteca.</p>
+          <h2 data-i18n="api.title">Referência da API</h2>
+          <p data-i18n="api.subtitle">Principais funções expostas pela biblioteca.</p>
         </div>
         <div class="grid two">
           <div>
