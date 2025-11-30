@@ -452,3 +452,146 @@ body {
     align-items: flex-start;
   }
 }
+
+/* Theory page */
+.theory-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: var(--hero-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.theory-hero .meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+:root[data-theme='light'] .tag {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.theory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.equation-box {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 10px;
+}
+
+.equation {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 15px;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 10px;
+  padding: 12px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+
+.figure-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.figure-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.figure-card img, .figure-card video, .figure-card .gif-box {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+}
+
+.gif-box {
+  height: 140px;
+  background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(77, 208, 225, 0.08));
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.gif-box::before, .gif-box::after {
+  content: '';
+  position: absolute;
+  width: 160%;
+  height: 50%;
+  background: linear-gradient(90deg, rgba(157, 78, 221, 0.4), rgba(77, 208, 225, 0.4));
+  animation: wave 4s linear infinite;
+  opacity: 0.6;
+}
+
+.gif-box::after {
+  animation-duration: 6s;
+  animation-direction: reverse;
+}
+
+@keyframes wave {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(20%);
+  }
+}
+
+.theory-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.theory-list li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: start;
+  gap: 10px;
+}
+
+.theory-list li::before {
+  content: '•';
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.quote {
+  border-left: 3px solid var(--accent-2);
+  padding-left: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
