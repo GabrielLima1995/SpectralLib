@@ -8,6 +8,10 @@
   --border: #1f2a3c;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   --radius: 14px;
+  --hero-bg: linear-gradient(135deg, #111829, #0d1117);
+  --panel-bg: #0f1627;
+  --code-bg: #0b1220;
+  --code-fg: #c7d2fe;
 }
 
 :root[data-theme='light'] {
@@ -19,6 +23,10 @@
   --accent-2: #0ea5e9;
   --border: #e5e7eb;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --hero-bg: linear-gradient(135deg, #f9fafb, #eef2ff);
+  --panel-bg: #ffffff;
+  --code-bg: #f5f7fb;
+  --code-fg: #1f2933;
 }
 
 * {
@@ -166,7 +174,7 @@ body {
   gap: 18px;
   padding: 28px;
   border-radius: var(--radius);
-  background: linear-gradient(135deg, #111829, #0d1117);
+  background: var(--hero-bg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
@@ -226,7 +234,7 @@ body {
 .hero-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: #0e1626;
+  background: var(--panel-bg);
   box-shadow: var(--shadow);
 }
 
@@ -250,9 +258,9 @@ body {
   display: block;
   padding: 14px 16px;
   margin: 0;
-  background: #0b1220;
+  background: var(--code-bg);
   border-radius: 0 0 var(--radius) var(--radius);
-  color: #c7d2fe;
+  color: var(--code-fg);
   font-family: 'JetBrains Mono', Consolas, monospace;
   font-size: 14px;
   overflow-x: auto;
@@ -293,7 +301,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
-  background: #0f1627;
+  background: var(--panel-bg);
   box-shadow: var(--shadow);
 }
 
@@ -313,7 +321,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
-  background: #0f1627;
+  background: var(--panel-bg);
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
