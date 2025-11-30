@@ -542,36 +542,35 @@ body {
 }
 
 .gif-box {
-  height: 140px;
-  background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(77, 208, 225, 0.08));
   display: grid;
   place-items: center;
   position: relative;
   overflow: hidden;
+  min-height: 160px;
 }
 
-.gif-box::before, .gif-box::after {
-  content: '';
+.gif-box svg {
+  width: 100%;
+  height: 180px;
+  display: block;
+}
+
+.gif-label {
   position: absolute;
-  width: 160%;
-  height: 50%;
-  background: linear-gradient(90deg, rgba(157, 78, 221, 0.4), rgba(77, 208, 225, 0.4));
-  animation: wave 4s linear infinite;
-  opacity: 0.6;
+  bottom: 10px;
+  right: 12px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  backdrop-filter: blur(6px);
 }
 
-.gif-box::after {
-  animation-duration: 6s;
-  animation-direction: reverse;
-}
-
-@keyframes wave {
-  from {
-    transform: translateX(-20%);
-  }
-  to {
-    transform: translateX(20%);
-  }
+:root[data-theme='light'] .gif-label {
+  background: rgba(0, 0, 0, 0.15);
+  color: #0b1220;
 }
 
 .theory-list {

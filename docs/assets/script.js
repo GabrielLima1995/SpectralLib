@@ -282,6 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateExamplesStatusText();
+    typesetMath();
+  }
+
+  function typesetMath() {
+    if (!window.MathJax || !MathJax.startup) return;
+    MathJax.startup.promise
+      .then(() => MathJax.typesetPromise(document.querySelectorAll('.equation')))
+      .catch((err) => console.warn('MathJax', err));
   }
 
   const storedTheme = localStorage.getItem('spectral-theme');

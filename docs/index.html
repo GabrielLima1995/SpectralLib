@@ -7,6 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
@@ -279,7 +291,28 @@ vals = real_fft(sin.(x))
             </div>
             <div class="figure-card">
               <div class="gif-box" aria-label="Animação de modos espectrais">
-                <strong data-i18n="theory.gif-label">GIF espectral</strong>
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="wave-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                      <stop offset="0%" stop-color="#9d4edd" />
+                      <stop offset="100%" stop-color="#4dd0e1" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="520" height="180" fill="url(#wave-gradient)">
+                    <animate attributeName="x" from="0" to="-260" dur="6s" repeatCount="indefinite" />
+                  </rect>
+                  <g stroke="#0b1220" stroke-width="3" fill="none" opacity="0.75">
+                    <path>
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 90 Q60 40 120 90 T240 90 T360 90 T480 90;M0 90 Q60 140 120 90 T240 90 T360 90 T480 90;M0 90 Q60 40 120 90 T240 90 T360 90 T480 90" />
+                    </path>
+                    <path>
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 90 Q80 130 160 90 T320 90 T480 90;M0 90 Q80 50 160 90 T320 90 T480 90;M0 90 Q80 130 160 90 T320 90 T480 90" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="theory.gif-label">GIF espectral</strong>
               </div>
               <p class="muted" data-i18n="theory.gif-caption">Ondas deslizando representam como os modos base se combinam.</p>
             </div>
@@ -294,7 +327,7 @@ vals = real_fft(sin.(x))
           <div class="theory-grid">
             <div class="equation-box">
               <h3 data-i18n="cheb.expansion">Expansão modal</h3>
-              <div class="equation">f(x) ≈ \sum_{n=0}^{N} a_n T_n(x)</div>
+              <div class="equation">\[ f(x) \approx \sum_{n=0}^{N} a_n T_n(x) \]</div>
               <ul class="theory-list">
                 <li data-i18n="cheb.fft">Transformada usa FFT real: complexidade O(N log N).</li>
                 <li data-i18n="cheb.roots">Nós de Gauss/Lobatto minimizam o erro de interpolação.</li>
@@ -307,7 +340,23 @@ vals = real_fft(sin.(x))
             </div>
             <div class="figure-card">
               <div class="gif-box" aria-label="Aliasing e filtragem">
-                <strong data-i18n="cheb.aliased">Anti-aliasing</strong>
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="cheb-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                      <stop offset="0%" stop-color="#4dd0e1" />
+                      <stop offset="100%" stop-color="#9d4edd" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <path stroke="url(#cheb-gradient)" stroke-width="5" fill="none">
+                    <animate attributeName="d" dur="4.5s" repeatCount="indefinite"
+                      values="M0 90 Q70 30 140 90 T280 90 T420 90 T560 90;M0 90 Q70 150 140 90 T280 90 T420 90 T560 90;M0 90 Q70 30 140 90 T280 90 T420 90 T560 90" />
+                  </path>
+                  <path stroke="#c7d2fe" stroke-width="2" stroke-dasharray="6 8" fill="none">
+                    <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M0 120 L520 120;M0 60 L520 60;M0 120 L520 120" />
+                  </path>
+                </svg>
+                <strong class="gif-label" data-i18n="cheb.aliased">Anti-aliasing</strong>
               </div>
               <p class="muted" data-i18n="cheb.aliased-caption">Filtrar modos altos evita Gibbs ao reconstruir sinais não suaves.</p>
             </div>
@@ -322,7 +371,7 @@ vals = real_fft(sin.(x))
           <div class="theory-grid">
             <div class="equation-box">
               <h3 data-i18n="leg.recursion">Recorrência</h3>
-              <div class="equation">(n+1) P_{n+1}(x) = (2n+1) x P_n(x) - n P_{n-1}(x)</div>
+              <div class="equation">\[ (n+1) P_{n+1}(x) = (2n+1) \, x \, P_n(x) - n P_{n-1}(x) \]</div>
               <ul class="theory-list">
                 <li data-i18n="leg.mass">Bases de Gauss/Lobatto geram matrizes de massa diagonais.</li>
                 <li data-i18n="leg.integration">Integração espectral usa integrais exatas dos polinômios.</li>
@@ -335,7 +384,20 @@ vals = real_fft(sin.(x))
             </div>
             <div class="figure-card">
               <div class="gif-box" aria-label="Fluxo conservativo">
-                <strong data-i18n="leg.conservation">Fluxos</strong>
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g fill="none" stroke-width="4">
+                    <path stroke="#4dd0e1">
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 140 Q130 100 260 140 T520 140;M0 140 Q130 40 260 140 T520 140;M0 140 Q130 100 260 140 T520 140" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 60 Q130 100 260 60 T520 60;M0 60 Q130 140 260 60 T520 60;M0 60 Q130 100 260 60 T520 60" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="leg.conservation">Fluxos</strong>
               </div>
               <p class="muted" data-i18n="leg.conservation-caption">Galerkin de Legendre mantém conservação em formulações fracas.</p>
             </div>
@@ -350,7 +412,7 @@ vals = real_fft(sin.(x))
           <div class="theory-grid">
             <div class="equation-box">
               <h3 data-i18n="four.series">Série periódica</h3>
-              <div class="equation">f(x) = \sum_{k=-N}^{N} \hat{f}_k e^{i k x}, \quad f'(x) = \sum_{k=-N}^{N} i k \hat{f}_k e^{i k x}</div>
+              <div class="equation">\[ f(x) = \sum_{k=-N}^{N} \hat{f}_k e^{i k x}, \quad f'(x) = \sum_{k=-N}^{N} i k \hat{f}_k e^{i k x} \]</div>
               <ul class="theory-list">
                 <li data-i18n="four.fft">FFT reduz o custo de projeção para O(N log N).</li>
                 <li data-i18n="four.aliasing">Truncamento atua como filtro de banda: controla aliasing.</li>
@@ -363,7 +425,20 @@ vals = real_fft(sin.(x))
             </div>
             <div class="figure-card">
               <div class="gif-box" aria-label="Espaço-frequência animado">
-                <strong data-i18n="four.spectrum">Domínio frequencial</strong>
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g stroke-width="4" fill="none">
+                    <path stroke="#4dd0e1" stroke-dasharray="8 10">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 90 Q70 40 140 90 T280 90 T420 90 T560 90;M0 90 Q70 140 140 90 T280 90 T420 90 T560 90;M0 90 Q70 40 140 90 T280 90 T420 90 T560 90" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="3.5s" repeatCount="indefinite"
+                        values="M0 90 Q90 130 180 90 T360 90 T540 90;M0 90 Q90 50 180 90 T360 90 T540 90;M0 90 Q90 130 180 90 T360 90 T540 90" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="four.spectrum">Domínio frequencial</strong>
               </div>
               <p class="muted" data-i18n="four.spectrum-caption">Visualize energia migrando entre frequências após derivar ou filtrar.</p>
             </div>
@@ -378,7 +453,7 @@ vals = real_fft(sin.(x))
           <div class="theory-grid">
             <div class="equation-box">
               <h3 data-i18n="generic.operators">Operadores</h3>
-              <div class="equation">D f = V \Lambda V^{-1} f, \quad M_f g = V diag(f) V^{-1} g</div>
+              <div class="equation">\[ D f = V \Lambda V^{-1} f, \quad M_f g = V \operatorname{diag}(f) V^{-1} g \]</div>
               <ul class="theory-list">
                 <li data-i18n="generic.stability">Pré-condicionamento modal reduz números de condição.</li>
                 <li data-i18n="generic.integration">Operadores de integração acumulam coeficientes com pesos 1/k.</li>
@@ -391,7 +466,20 @@ vals = real_fft(sin.(x))
             </div>
             <div class="figure-card">
               <div class="gif-box" aria-label="Interação entre bases">
-                <strong data-i18n="generic.blend">Híbrido</strong>
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g stroke-width="4" fill="none">
+                    <path stroke="#4dd0e1">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 120 Q120 80 240 120 T480 120;M0 120 Q120 40 240 120 T480 120;M0 120 Q120 80 240 120 T480 120" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 60 Q120 100 240 60 T480 60;M0 60 Q120 140 240 60 T480 60;M0 60 Q120 100 240 60 T480 60" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="generic.blend">Híbrido</strong>
               </div>
               <p class="muted" data-i18n="generic.blend-caption">Combinar bases permite domínio periódico em x e polinomial em y.</p>
             </div>
