@@ -4,188 +4,188 @@ window.SPECTRAL_EXAMPLES = [
     "title": "ChebyshevTransform",
     "description": "Aplica a transformada discreta para ir e voltar entre espaço físico e espectral.",
     "code": "using SpectralLib\nvalues = [1.0, 0.0, -1.0, 0.5]\nspectral = ChebyshevTransform(values, 1, 1)\nback = ChebyshevTransform(spectral, 1, 2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Coeficientes espectrais e vetor reconstruído calculados para o exemplo básico."
   },
   {
     "id": "chebyshev-ds",
     "title": "DS_Cheby",
     "description": "Gera a matriz de diferenciação modal para polinômios de Chebyshev de ordem n.",
     "code": "using SpectralLib\nD = DS_Cheby(3)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz 4x4 de diferenciação modal preenchida para Chebyshev (ordem 3)."
   },
   {
     "id": "chebyshev-quadrature",
     "title": "ChebyQuadrature",
     "description": "Constrói nós e pesos de quadratura em [a, b].",
     "code": "using SpectralLib\nz, w = ChebyQuadrature(-1.0, 1.0, 4, 1)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós e pesos simétricos de Gauss-Cheby em [-1, 1] com quatro pontos."
   },
   {
     "id": "chebyshev-basis",
     "title": "Base_Cheby_n",
     "description": "Avalia a base de Chebyshev até ordem n em um vetor de pontos.",
     "code": "using SpectralLib\nx = [-1.0, 0.0, 1.0]\nB = Base_Cheby_n(3, x)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de base T₀..T₃ avaliada em x = [-1, 0, 1]."
   },
   {
     "id": "chebyshev-matrix-product",
     "title": "M_Prod_Cheby",
     "description": "Matriz de multiplicação espectral para coeficientes de Chebyshev.",
     "code": "using SpectralLib\nah = [1.0, 0.5, 0.25]\nM = M_Prod_Cheby(ah)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de multiplicação espectral gerada a partir de ah = [1.0, 0.5, 0.25]."
   },
   {
     "id": "chebyshev-nodes",
     "title": "ChebyNodes",
     "description": "Nós e pesos típicos para integrais de Chebyshev.",
     "code": "using SpectralLib\nx, w = ChebyNodes(4, 2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós e pesos padrão para n = 4 (tipo 2 / Lobatto)."
   },
   {
     "id": "chebyshev-integration",
     "title": "JS_Cheb",
     "description": "Matriz operacional de integração para base de Chebyshev.",
     "code": "using SpectralLib\nJ = JS_Cheb(3)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz operacional de integração 4x4 para polinômios de Chebyshev."
   },
   {
     "id": "legendre-gauss-basis",
     "title": "Legendre_Gauss_Basis",
     "description": "Gera nós de Gauss-Legendre, pesos e matrizes associadas.",
     "code": "using SpectralLib\nBL, BI, xG, wG = Legendre_Gauss_Basis(3)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós/pesos de Gauss-Legendre e matrizes BL/BI para ordem 3."
   },
   {
     "id": "legendre-lobatto-basis",
     "title": "Legendre_Lobatto_Basis",
     "description": "Nós e pesos de Gauss-Lobatto com a respectiva matriz de base.",
     "code": "using SpectralLib\nxLL, wGL, P = Legendre_Lobatto_Basis(4)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós/pesos de Gauss-Lobatto e matriz P para ordem 4."
   },
   {
     "id": "legendre-radau-left",
     "title": "Legendre_Radau_BasisL",
     "description": "Base de Radau com nó fixo em -1.",
     "code": "using SpectralLib\nxRL, wRL, RL = Legendre_Radau_BasisL(4)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós/pesos Radau com ponto fixo em -1 e base RL correspondente."
   },
   {
     "id": "legendre-radau-right",
     "title": "Legendre_Radau_BasisR",
     "description": "Base de Radau com nó fixo em 1.",
     "code": "using SpectralLib\nxRR, wRR, RR = Legendre_Radau_BasisR(4)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós/pesos Radau com ponto fixo em 1 e base RR correspondente."
   },
   {
     "id": "legendre-eval",
     "title": "eval_legendre",
     "description": "Avalia polinômios de Legendre em pontos fornecidos.",
     "code": "using SpectralLib\nvals = eval_legendre(3, [-0.5, 0.0, 0.5])",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Valores de P₀..P₃ calculados em [-0.5, 0.0, 0.5]."
   },
   {
     "id": "legendre-quad-types",
     "title": "GaussQuadTypes",
     "description": "Quadratura genérica em um intervalo com vários tipos de nós.",
     "code": "using SpectralLib\nz, w = GaussQuadTypes(-1.0, 1.0, 3, 2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Nós e pesos gerados para o intervalo [-1, 1] usando tipo de nós = 2."
   },
   {
     "id": "legendre-ds",
     "title": "DS_Legendre",
     "description": "Matriz modal de diferenciação para Legendre.",
     "code": "using SpectralLib\nD = DS_Legendre(3)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz 4x4 de diferenciação modal de Legendre."
   },
   {
     "id": "legendre-basis-matrix",
     "title": "Base_Legendre_n",
     "description": "Matriz de Vandermonde de Legendre até ordem n.",
     "code": "using SpectralLib\nx = [-1.0, 0.0, 1.0]\nB = Base_Legendre_n(3, x)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de base de Legendre até ordem 3 avaliada em x = [-1, 0, 1]."
   },
   {
     "id": "legendre-mprod",
     "title": "M_Prod_Legendre",
     "description": "Matriz de multiplicação espectral usando coeficientes de Legendre.",
     "code": "using SpectralLib\nah = [1.0, 0.5, 0.25]\nM = M_Prod_Legendre(ah)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de multiplicação espectral formada pelos coeficientes ah."
   },
   {
     "id": "legendre-integration",
     "title": "JS_Leg",
     "description": "Matriz operacional de integração para coeficientes de Legendre.",
     "code": "using SpectralLib\nJ = JS_Leg(3)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz operacional de integração (ordem 3) para coeficientes de Legendre."
   },
   {
     "id": "fourier-ds",
     "title": "DS_Fourier",
     "description": "Matriz modal de diferenciação para coeficientes reais de Fourier.",
     "code": "using SpectralLib\nD = DS_Fourier(2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz real de diferenciação modal de Fourier para n = 2."
   },
   {
     "id": "fourier-fourdif",
     "title": "fourdif",
     "description": "Matriz de diferenciação espectral para pontos periódicos.",
     "code": "using SpectralLib\nx, D = fourdif(5, 1)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Pontos periódicos e matriz de primeira derivada para m = 5."
   },
   {
     "id": "fourier-multi-diff",
     "title": "Multi_Diff_Mat",
     "description": "Coleção de matrizes de diferenciação até uma ordem máxima.",
     "code": "using SpectralLib\nx, mats = Multi_Diff_Mat(5, 2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Lista de matrizes de primeira e segunda derivada para m = 5."
   },
   {
     "id": "fourier-barycentric",
     "title": "Bary_Trig_Mat",
     "description": "Interpolação trigonométrica em pontos arbitrários.",
     "code": "using SpectralLib\nfk = [0.0, 1.0, 0.0, -1.0]\nx = [0.1, 2.0]\nt, P = Bary_Trig_Mat(fk, x)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Valores interpolados e matriz baricêntrica para fk e x fornecidos."
   },
   {
     "id": "fourier-integration",
     "title": "JS_Fourier",
     "description": "Matriz de integração modal para séries reais de Fourier.",
     "code": "using SpectralLib\nI = JS_Fourier(2)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de integração modal para séries reais de Fourier (n = 2)."
   },
   {
     "id": "fourier-quad-function",
     "title": "fourier_quad (função)",
     "description": "Integra uma função periódica usando quadratura espectral.",
     "code": "using SpectralLib\nintegral = fourier_quad(x -> sin(x), 9)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Integral numérica de sin(x) em [0, 2π], aproximadamente 0."
   },
   {
     "id": "fourier-quad-data",
     "title": "fourier_quad (vetor)",
     "description": "Integra dados discretos igualmente espaçados.",
     "code": "using SpectralLib\nsamples = sin.(range(0, stop=2pi, length=9))\nvalue = fourier_quad(samples)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Integral dos dados senoidais igualmente espaçados em [0, 2π]."
   },
   {
     "id": "fourier-real-fft",
     "title": "real_fft / real_ifft",
     "description": "Transformada rápida real e inversa para vetores.",
     "code": "using SpectralLib\nvals = [0.0, 1.0, 0.0, -1.0]\nspectral = real_fft(vals)\nrecovered = real_ifft(spectral)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Coeficientes espectrais reais e vetor recuperado ≈ [0.0, 1.0, 0.0, -1.0]."
   },
   {
     "id": "generic-barycentric",
     "title": "Bary_Interp",
     "description": "Interpolação polinomial baricêntrica sobre pontos arbitrários.",
     "code": "using SpectralLib\nxk = [-1.0, 0.0, 1.0]\nfk = [1.0, 0.0, 1.0]\nxnew = [-0.5, 0.5]\nfnew, P = Bary_Interp(xk, fk, xnew)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Interpolação polinomial retorna valores em x = [-0.5, 0.5] e matriz P."
   },
   {
     "id": "generic-diff-matrix",
     "title": "Generalized_Diff_Mat",
     "description": "Matriz de diferenciação para pontos não uniformes.",
     "code": "using SpectralLib\nxs = [-1.0, -0.2, 0.4, 1.0]\nD = Generalized_Diff_Mat(xs)",
-    "output": "Saída pré-gerada. Execute `julia --project=. examples/examples.jl --emit-json docs/assets/examples.json` para recalcular."
+    "output": "Matriz de diferenciação para pontos não uniformes [-1.0, -0.2, 0.4, 1.0]."
   }
-];
+]
