@@ -189,12 +189,52 @@ const translations = {
 };
 
 let currentLang = 'pt';
+let currentTab = 'docs';
 
 document.addEventListener('DOMContentLoaded', () => {
   const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
   const root = document.documentElement;
   const themeToggle = document.querySelector('.theme-toggle');
   const langToggle = document.querySelector('.lang-toggle');
+  const tabPanels = document.querySelectorAll('[data-tab-panel]');
+  const tabTargets = document.querySelectorAll('[data-tab-target]');
+
+  function activateTab(tab) {
+    currentTab = tab;
+    localStorage.setItem('spectral-tab', tab);
+    document.documentElement.dataset.activeTab = tab;
+
+    tabPanels.forEach((panel) => {
+      panel.classList.toggle('hidden', panel.dataset.tabPanel !== tab);
+    });
+
+    tabTargets.forEach((target) => {
+      const isActive = target.dataset.tabTarget === tab;
+      if (target.classList.contains('tab-btn') || target.closest('.topnav')) {
+        target.classList.toggle('active', isActive);
+      }
+      if (target.getAttribute('role') === 'tab') {
+        target.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      }
+    });
+  }
+
+  function handleTabNavigation(event, tab) {
+    if (!tab) return;
+    const hash = event.currentTarget.getAttribute('href');
+    event.preventDefault();
+    activateTab(tab);
+
+    if (hash && hash.startsWith('#')) {
+      requestAnimationFrame(() => {
+        const target = document.querySelector(hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', hash);
+        }
+      });
+    }
+  }
 
   function setTheme(light) {
     if (light) {
@@ -255,7 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (storedLang === 'en' || storedLang === 'pt') {
     currentLang = storedLang;
   }
+  const storedTab = localStorage.getItem('spectral-tab');
+  if (storedTab === 'theory' || storedTab === 'docs') {
+    currentTab = storedTab;
+  }
+
   applyTranslations(currentLang);
+  activateTab(currentTab);
 
   themeToggle?.addEventListener('click', () => {
     const isLight = root.getAttribute('data-theme') === 'light';
@@ -265,6 +311,12 @@ document.addEventListener('DOMContentLoaded', () => {
   langToggle?.addEventListener('click', () => {
     const nextLang = currentLang === 'pt' ? 'en' : 'pt';
     applyTranslations(nextLang);
+  });
+
+  tabTargets.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      handleTabNavigation(event, link.dataset.tabTarget);
+    });
   });
 
   hydrateExamples();
