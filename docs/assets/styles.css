@@ -347,6 +347,10 @@ body {
   font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
 }
 
+.hidden {
+  display: none;
+}
+
 .label {
   display: inline-block;
   padding: 4px 10px;
