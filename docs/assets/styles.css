@@ -256,6 +256,8 @@ body {
   font-family: 'JetBrains Mono', Consolas, monospace;
   font-size: 14px;
   overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .card {
@@ -316,6 +318,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
 
 .example-header {
@@ -323,6 +326,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
 }
 
 .example-actions {
@@ -345,6 +349,11 @@ body {
   white-space: pre-wrap;
   min-height: 80px;
   font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .hidden {
