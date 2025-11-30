@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpectralLib.jl Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="name">SpectralLib.jl</span>
+    </div>
+    <nav class="topnav">
+      <a href="#getting-started">Getting started</a>
+      <a href="#bases">Bases</a>
+      <a href="#examples">Examples</a>
+      <a href="#api">API</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle theme">
+      <span class="sun">☀️</span>
+      <span class="moon">🌙</span>
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="search">
+        <input type="search" placeholder="Search docs" aria-label="Search" />
+      </div>
+      <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#getting-started">Getting started</a></li>
+          <li><a href="#bases">Spectral bases</a>
+            <ul>
+              <li><a href="#chebyshev">Chebyshev</a></li>
+              <li><a href="#legendre">Legendre</a></li>
+              <li><a href="#fourier">Fourier</a></li>
+            </ul>
+          </li>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#api">API Reference</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero" id="intro">
+        <div>
+          <p class="eyebrow">Docs • v0.1</p>
+          <h1>Fast spectral methods in Julia</h1>
+          <p class="lede">
+            SpectralLib.jl gives you Chebyshev, Legendre, and Fourier bases with
+            ready-to-use differentiation, integration, and transform utilities.
+            Built for teaching, research, and production simulations.
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#getting-started">Start with Julia</a>
+            <a class="btn ghost" href="#examples">View examples</a>
+          </div>
+          <div class="badges">
+            <span>✔︎ Pure Julia</span>
+            <span>✔︎ Orthogonal polynomials</span>
+            <span>✔︎ Plot-ready grids</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="card-header">
+            <span class="status-dot"></span>
+            <span>Spectral expansion</span>
+          </div>
+          <pre><code class="code-block">julia&gt; using SpectralLib
+
+# approximate f(x) = e^x on [-1, 1]
+julia&gt; basis = ChebyshevBasis(16)
+ChebyshevBasis(16)
+
+julia&gt; coeffs = project(basis, x -&gt; exp(x))
+16-element Vector{Float64}: ...
+
+julia&gt; f̂ = reconstruct(basis, coeffs)
+(x) -&gt; 2.718...
+
+julia&gt; f̂(0.5)
+1.64872</code></pre>
+        </div>
+      </section>
+
+      <section id="getting-started" class="card">
+        <div class="section-header">
+          <h2>Getting started</h2>
+          <p>Install the package and run your first transform.</p>
+        </div>
+        <div class="grid two">
+          <div>
+            <h3>Installation</h3>
+            <pre><code class="code-block">pkg&gt; add SpectralLib</code></pre>
+            <p>
+              SpectralLib.jl has zero external dependencies. After adding the
+              package, load the base you want and start composing operators.
+            </p>
+          </div>
+          <div>
+            <h3>First approximation</h3>
+            <pre><code class="code-block">using SpectralLib
+
+basis = LegendreBasis(10)
+coeffs = project(basis, x -&gt; sinpi(x))
+
+# Evaluate on the native Gauss nodes
+values = evaluate(basis, coeffs)
+
+# Recover a function handle
+f̂ = reconstruct(basis, coeffs)
+f̂(0.25)</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="bases" class="card">
+        <div class="section-header">
+          <h2>Spectral bases</h2>
+          <p>Consistent API across orthogonal polynomial and Fourier families.</p>
+        </div>
+        <div class="grid three">
+          <article class="panel" id="chebyshev">
+            <h3>Chebyshev</h3>
+            <p>
+              Use Chebyshev polynomials on [-1, 1] for rapid convergence of
+              smooth functions, with cosine transforms and Clenshaw evaluation.
+            </p>
+            <pre><code class="code-block">basis = ChebyshevBasis(32)
+D = differentiation_matrix(basis)
+</code></pre>
+          </article>
+          <article class="panel" id="legendre">
+            <h3>Legendre</h3>
+            <p>
+              Work with Gauss or Gauss–Lobatto nodes, integration weights, and
+              recurrence coefficients for polynomial families.</p>
+            <pre><code class="code-block">basis = LegendreBasis(24)
+weights = quadrature_weights(basis)
+</code></pre>
+          </article>
+          <article class="panel" id="fourier">
+            <h3>Fourier</h3>
+            <p>
+              Periodic expansions with FFT-friendly grids and spectral
+              differentiation matrices.</p>
+            <pre><code class="code-block">basis = FourierBasis(64)
+T = transform_matrix(basis)
+</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="examples" class="card">
+        <div class="section-header">
+          <h2>Examples</h2>
+          <p>Explore typical workflows with clear, copy-paste snippets.</p>
+        </div>
+        <div class="example">
+          <div class="example-header">
+            <h3>Boundary value problem</h3>
+            <span class="label">Chebyshev</span>
+          </div>
+          <p>
+            Solve <code>u'' = sin(πx)</code> with Dirichlet conditions using a
+            spectral differentiation matrix.
+          </p>
+          <pre><code class="code-block">using SpectralLib, LinearAlgebra
+N = 32
+basis = ChebyshevBasis(N)
+D2 = differentiation_matrix(basis, 2)
+
+rhs = sinpi.(basis.nodes)
+A = D2[2:end-1, 2:end-1]
+b = rhs[2:end-1]
+
+u = zeros(N)
+u[2:end-1] = A \ b
+</code></pre>
+        </div>
+
+        <div class="example">
+          <div class="example-header">
+            <h3>Projection and reconstruction</h3>
+            <span class="label purple">Legendre</span>
+          </div>
+          <p>Project a smooth function and evaluate it on an arbitrary mesh.</p>
+          <pre><code class="code-block">basis = LegendreBasis(12)
+coeffs = project(basis, x -> exp(-3x^2))
+f̂ = reconstruct(basis, coeffs)
+
+xs = range(-1, 1, length=200)
+ys = f̂.(xs)
+</code></pre>
+        </div>
+
+        <div class="example">
+          <div class="example-header">
+            <h3>Fourier convolution</h3>
+            <span class="label green">Fourier</span>
+          </div>
+          <p>Leverage circulant convolution with FFT-friendly bases.</p>
+          <pre><code class="code-block">basis = FourierBasis(64)
+coeffs = project(basis, x -> sin(4πx) + 0.2cos(9πx))
+
+# differentiate in spectral space
+D = differentiation_matrix(basis)
+coeffs′ = D * coeffs
+</code></pre>
+        </div>
+      </section>
+
+      <section id="api" class="card">
+        <div class="section-header">
+          <h2>API reference</h2>
+          <p>Core constructors and utilities are designed to be discoverable.</p>
+        </div>
+        <div class="grid two">
+          <div>
+            <h3>Constructors</h3>
+            <ul class="list">
+              <li><code>ChebyshevBasis(::Int)</code></li>
+              <li><code>LegendreBasis(::Int)</code></li>
+              <li><code>FourierBasis(::Int)</code></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Operators</h3>
+            <ul class="list">
+              <li><code>differentiation_matrix(basis, order=1)</code></li>
+              <li><code>integration_matrix(basis)</code></li>
+              <li><code>transform_matrix(basis)</code></li>
+              <li><code>project(basis, f)</code> / <code>reconstruct(basis, c)</code></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div>Made with Julia • SpectralLib.jl</div>
+    <div class="links">
+      <a href="#">GitHub</a>
+      <a href="#">Discussions</a>
+      <a href="#">Releases</a>
+    </div>
+  </footer>
+  <script src="assets/script.js"></script>
+</body>
+</html>
