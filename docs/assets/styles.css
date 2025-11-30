@@ -299,20 +299,52 @@ body {
   margin-top: 0;
 }
 
-.example {
+.example { display: none; }
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.example-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
-  margin-bottom: 14px;
   background: #0f1627;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .example-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+}
+
+.example-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn.small {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.output {
+  background: var(--muted);
+  color: var(--muted-text);
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+  white-space: pre-wrap;
+  min-height: 80px;
+  font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", monospace;
 }
 
 .label {

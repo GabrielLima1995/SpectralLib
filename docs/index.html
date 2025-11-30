@@ -56,9 +56,9 @@
           <p class="eyebrow">Docs • v0.1</p>
           <h1>Fast spectral methods in Julia</h1>
           <p class="lede">
-            SpectralLib.jl gives you Chebyshev, Legendre, and Fourier bases with
-            ready-to-use differentiation, integration, and transform utilities.
-            Built for teaching, research, and production simulations.
+            SpectralLib.jl agrupa os métodos espectrais do repositório em uma
+            biblioteca Julia única, com transformadas, matrizes de
+            diferenciação e pesos de quadratura prontos para usar.
           </p>
           <div class="cta-row">
             <a class="btn primary" href="#getting-started">Start with Julia</a>
@@ -73,52 +73,47 @@
         <div class="hero-card">
           <div class="card-header">
             <span class="status-dot"></span>
-            <span>Spectral expansion</span>
+            <span>Transformadas e quadraturas</span>
           </div>
           <pre><code class="code-block">julia&gt; using SpectralLib
 
-# approximate f(x) = e^x on [-1, 1]
-julia&gt; basis = ChebyshevBasis(16)
-ChebyshevBasis(16)
+julia&gt; vals = [1, 0, -1, 0.5]
+julia&gt; spectral = ChebyshevTransform(vals, 1, 1)
+julia&gt; rec = ChebyshevTransform(spectral, 1, 2)
 
-julia&gt; coeffs = project(basis, x -&gt; exp(x))
-16-element Vector{Float64}: ...
-
-julia&gt; f̂ = reconstruct(basis, coeffs)
-(x) -&gt; 2.718...
-
-julia&gt; f̂(0.5)
-1.64872</code></pre>
+julia&gt; z, w = ChebyQuadrature(-1, 1, 4, 1)
+julia&gt; D = DS_Cheby(3)
+          </code></pre>
         </div>
       </section>
 
       <section id="getting-started" class="card">
         <div class="section-header">
           <h2>Getting started</h2>
-          <p>Install the package and run your first transform.</p>
+          <p>Instale a biblioteca e rode seu primeiro operador.</p>
         </div>
         <div class="grid two">
           <div>
-            <h3>Installation</h3>
+            <h3>Instalação</h3>
             <pre><code class="code-block">pkg&gt; add SpectralLib</code></pre>
             <p>
-              SpectralLib.jl has zero external dependencies. After adding the
-              package, load the base you want and start composing operators.
+              A biblioteca expõe os módulos <code>Chebyshev</code>,
+              <code>Legendre</code>, <code>Fourier</code> e <code>Generic</code>.
+              Todos os símbolos principais são reexportados em
+              <code>using SpectralLib</code>.
             </p>
           </div>
           <div>
-            <h3>First approximation</h3>
+            <h3>Primeiro passo</h3>
             <pre><code class="code-block">using SpectralLib
 
-basis = LegendreBasis(10)
-coeffs = project(basis, x -&gt; sinpi(x))
+x = [-1.0, 0.0, 1.0]
+B = Base_Legendre_n(3, x)
+D = DS_Legendre(3)
 
-# Evaluate on the native Gauss nodes
-values = evaluate(basis, coeffs)
-
-# Recover a function handle
-f̂ = reconstruct(basis, coeffs)
-f̂(0.25)</code></pre>
+z, w = ChebyQuadrature(-1, 1, 4, 2)
+f̂ = B * cos.(x)
+            </code></pre>
           </div>
         </div>
       </section>
@@ -126,35 +121,38 @@ f̂(0.25)</code></pre>
       <section id="bases" class="card">
         <div class="section-header">
           <h2>Spectral bases</h2>
-          <p>Consistent API across orthogonal polynomial and Fourier families.</p>
+          <p>API consistente para polinômios ortogonais e séries trigonométricas.</p>
         </div>
         <div class="grid three">
           <article class="panel" id="chebyshev">
             <h3>Chebyshev</h3>
             <p>
-              Use Chebyshev polynomials on [-1, 1] for rapid convergence of
-              smooth functions, with cosine transforms and Clenshaw evaluation.
+              Transformada direta/inversa via FFT real, nós de Gauss/Lobatto/Radau
+              e matrizes de diferenciação modais.
             </p>
-            <pre><code class="code-block">basis = ChebyshevBasis(32)
-D = differentiation_matrix(basis)
+            <pre><code class="code-block">spec = ChebyshevTransform([1,0,-1,0.5], 1, 1)
+D = DS_Cheby(4)
+z, w = ChebyQuadrature(-1, 1, 6, 2)
 </code></pre>
           </article>
           <article class="panel" id="legendre">
             <h3>Legendre</h3>
             <p>
-              Work with Gauss or Gauss–Lobatto nodes, integration weights, and
-              recurrence coefficients for polynomial families.</p>
-            <pre><code class="code-block">basis = LegendreBasis(24)
-weights = quadrature_weights(basis)
+              Bases de Gauss, Lobatto e Radau, matrizes de integração e
+              multiplicação e avaliação recursiva dos polinômios.
+            </p>
+            <pre><code class="code-block">BL, BI, xG, wG = Legendre_Gauss_Basis(3)
+J = JS_Leg(3)
 </code></pre>
           </article>
           <article class="panel" id="fourier">
             <h3>Fourier</h3>
             <p>
-              Periodic expansions with FFT-friendly grids and spectral
-              differentiation matrices.</p>
-            <pre><code class="code-block">basis = FourierBasis(64)
-T = transform_matrix(basis)
+              Diferenciação espectral, interpolação trigonométrica e quadratura
+              para funções periódicas.
+            </p>
+            <pre><code class="code-block">x, D = fourdif(9, 1)
+vals = real_fft(sin.(x))
 </code></pre>
           </article>
         </div>
@@ -163,83 +161,64 @@ T = transform_matrix(basis)
       <section id="examples" class="card">
         <div class="section-header">
           <h2>Examples</h2>
-          <p>Explore typical workflows with clear, copy-paste snippets.</p>
+          <p>Exemplos extraídos diretamente de <code>examples/examples.jl</code>.</p>
+          <p class="muted" id="examples-status">Carregando exemplos…</p>
         </div>
-        <div class="example">
-          <div class="example-header">
-            <h3>Boundary value problem</h3>
-            <span class="label">Chebyshev</span>
-          </div>
-          <p>
-            Solve <code>u'' = sin(πx)</code> with Dirichlet conditions using a
-            spectral differentiation matrix.
-          </p>
-          <pre><code class="code-block">using SpectralLib, LinearAlgebra
-N = 32
-basis = ChebyshevBasis(N)
-D2 = differentiation_matrix(basis, 2)
-
-rhs = sinpi.(basis.nodes)
-A = D2[2:end-1, 2:end-1]
-b = rhs[2:end-1]
-
-u = zeros(N)
-u[2:end-1] = A \ b
-</code></pre>
-        </div>
-
-        <div class="example">
-          <div class="example-header">
-            <h3>Projection and reconstruction</h3>
-            <span class="label purple">Legendre</span>
-          </div>
-          <p>Project a smooth function and evaluate it on an arbitrary mesh.</p>
-          <pre><code class="code-block">basis = LegendreBasis(12)
-coeffs = project(basis, x -> exp(-3x^2))
-f̂ = reconstruct(basis, coeffs)
-
-xs = range(-1, 1, length=200)
-ys = f̂.(xs)
-</code></pre>
-        </div>
-
-        <div class="example">
-          <div class="example-header">
-            <h3>Fourier convolution</h3>
-            <span class="label green">Fourier</span>
-          </div>
-          <p>Leverage circulant convolution with FFT-friendly bases.</p>
-          <pre><code class="code-block">basis = FourierBasis(64)
-coeffs = project(basis, x -> sin(4πx) + 0.2cos(9πx))
-
-# differentiate in spectral space
-D = differentiation_matrix(basis)
-coeffs′ = D * coeffs
-</code></pre>
-        </div>
+        <div id="examples-list" class="example-grid"></div>
       </section>
 
       <section id="api" class="card">
         <div class="section-header">
-          <h2>API reference</h2>
-          <p>Core constructors and utilities are designed to be discoverable.</p>
+          <h2>API Reference</h2>
+          <p>Principais funções expostas pela biblioteca.</p>
         </div>
         <div class="grid two">
           <div>
-            <h3>Constructors</h3>
-            <ul class="list">
-              <li><code>ChebyshevBasis(::Int)</code></li>
-              <li><code>LegendreBasis(::Int)</code></li>
-              <li><code>FourierBasis(::Int)</code></li>
+            <h3>Chebyshev</h3>
+            <ul>
+              <li><code>ChebyshevTransform(y, type, direction)</code></li>
+              <li><code>ChebyQuadrature(a, b, n, tipo)</code></li>
+              <li><code>DS_Cheby(n)</code></li>
+              <li><code>Base_Cheby_n(n, x)</code></li>
+              <li><code>M_Prod_Cheby(ah)</code></li>
+              <li><code>ChebyNodes(n, opt)</code></li>
+              <li><code>JS_Cheb(N)</code></li>
             </ul>
           </div>
           <div>
-            <h3>Operators</h3>
-            <ul class="list">
-              <li><code>differentiation_matrix(basis, order=1)</code></li>
-              <li><code>integration_matrix(basis)</code></li>
-              <li><code>transform_matrix(basis)</code></li>
-              <li><code>project(basis, f)</code> / <code>reconstruct(basis, c)</code></li>
+            <h3>Legendre</h3>
+            <ul>
+              <li><code>Legendre_Gauss_Basis(n)</code></li>
+              <li><code>Legendre_Lobatto_Basis(n)</code></li>
+              <li><code>Legendre_Radau_BasisL(n)</code></li>
+              <li><code>Legendre_Radau_BasisR(n)</code></li>
+              <li><code>eval_legendre(n, x)</code></li>
+              <li><code>GaussQuadTypes(a, b, n; tipo)</code></li>
+              <li><code>DS_Legendre(n)</code></li>
+              <li><code>Base_Legendre_n(n, x)</code></li>
+              <li><code>M_Prod_Legendre(ah)</code></li>
+              <li><code>JS_Leg(N)</code></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Fourier</h3>
+            <ul>
+              <li><code>DS_Fourier(M)</code></li>
+              <li><code>fourdif(N, m)</code></li>
+              <li><code>Multi_Diff_Mat(N, m_max)</code></li>
+              <li><code>Bary_Trig_Mat(fk, x)</code></li>
+              <li><code>JS_Fourier(M)</code></li>
+              <li><code>fourier_quad(f, N)</code></li>
+              <li><code>fourier_quad(y)</code></li>
+              <li><code>real_fft(y)</code></li>
+              <li><code>real_ifft(Y)</code></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Generic</h3>
+            <ul>
+              <li><code>Bary_Interp(xk, fk, xnew)</code></li>
+              <li><code>Generalized_Diff_Mat(xs)</code></li>
             </ul>
           </div>
         </div>
@@ -247,14 +226,6 @@ coeffs′ = D * coeffs
     </main>
   </div>
 
-  <footer class="footer">
-    <div>Made with Julia • SpectralLib.jl</div>
-    <div class="links">
-      <a href="#">GitHub</a>
-      <a href="#">Discussions</a>
-      <a href="#">Releases</a>
-    </div>
-  </footer>
   <script src="assets/script.js"></script>
 </body>
 </html>
