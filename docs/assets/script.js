@@ -34,8 +34,11 @@ async function hydrateExamples() {
   if (!container || !status) return;
 
   try {
-    const response = await fetch('assets/examples.json');
-    const examples = await response.json();
+    const inline = window.SPECTRAL_EXAMPLES;
+    const examples = Array.isArray(inline)
+      ? inline
+      : await fetchExamples();
+
     status.textContent = 'Clique em “Run example” para ver o código em ação.';
 
     examples.forEach((ex) => {
@@ -85,4 +88,12 @@ async function hydrateExamples() {
   } catch (err) {
     status.textContent = 'Não foi possível carregar os exemplos gerados.';
   }
+}
+
+async function fetchExamples() {
+  const response = await fetch('assets/examples.json');
+  if (!response.ok) {
+    throw new Error('Erro ao buscar examples.json');
+  }
+  return response.json();
 }
