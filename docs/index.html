@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpectralLib.jl Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="name">SpectralLib.jl</span>
+    </div>
+    <nav class="topnav">
+      <a href="#api" data-tab-target="docs" data-i18n="nav.api">API</a>
+      <a href="#fundamentos" data-tab-target="theory" data-i18n="nav.theory">Teoria</a>
+    </nav>
+    <div class="top-actions">
+      <button class="lang-toggle" aria-label="Alternar idioma">English</button>
+      <button class="theme-toggle" aria-label="Toggle theme">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="tab-panel" data-tab-panel="docs">
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="search">
+          <input
+            type="search"
+            placeholder="Buscar na documentação"
+            aria-label="Search"
+            data-i18n="search.placeholder"
+          />
+        </div>
+        <div class="toc">
+          <h3 data-i18n="sidebar.contents">Conteúdo</h3>
+          <ul>
+            <li><a href="#intro" data-tab-target="docs" data-i18n="toc.intro">Introdução</a></li>
+            <li><a href="#getting-started" data-tab-target="docs" data-i18n="toc.getting-started">Primeiros passos</a></li>
+            <li><a href="#bases" data-tab-target="docs" data-i18n="toc.bases">Bases espectrais</a>
+              <ul>
+                <li><a href="#chebyshev" data-tab-target="docs">Chebyshev</a></li>
+                <li><a href="#legendre" data-tab-target="docs">Legendre</a></li>
+                <li><a href="#fourier" data-tab-target="docs">Fourier</a></li>
+              </ul>
+            </li>
+            <li><a href="#examples" data-tab-target="docs" data-i18n="toc.examples">Exemplos</a></li>
+            <li><a href="#api" data-tab-target="docs" data-i18n="toc.api">Referência da API</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="hero" id="intro">
+          <div>
+            <p class="eyebrow">Docs • v0.1</p>
+            <h1 data-i18n="hero.title">Métodos espectrais em Julia</h1>
+            <p class="lede" data-i18n="hero.lede">
+              SpectralLib.jl agrupa os métodos espectrais do repositório em uma
+              biblioteca Julia única, com transformadas, matrizes de
+              diferenciação e pesos de quadratura prontos para usar.
+            </p>
+            <div class="cta-row">
+              <a class="btn primary" href="#getting-started" data-tab-target="docs" data-i18n="hero.cta-primary">Comece com Julia</a>
+              <a class="btn ghost" href="#examples" data-tab-target="docs" data-i18n="hero.cta-secondary">Ver exemplos</a>
+            </div>
+            <div class="badges">
+              <span data-i18n="hero.badge-julia">✔︎ 100% Julia</span>
+              <span data-i18n="hero.badge-orthogonal">✔︎ Polinômios ortogonais</span>
+              <span data-i18n="hero.badge-grids">✔︎ Malhas prontas para plotar</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="card-header">
+              <span class="status-dot"></span>
+              <span>Transformadas e quadraturas</span>
+            </div>
+            <pre><code class="code-block">julia&gt; using SpectralLib
+
+julia&gt; vals = [1, 0, -1, 0.5]
+spectral = ChebyshevTransform(vals, 1, 1)
+rec = ChebyshevTransform(spectral, 1, 2)
+
+julia&gt; z, w = ChebyQuadrature(-1, 1, 4, 1)
+julia&gt; D = DS_Cheby(3)
+            </code></pre>
+          </div>
+        </section>
+
+        <section id="getting-started" class="card">
+          <div class="section-header">
+            <h2 data-i18n="start.title">Primeiros passos</h2>
+            <p data-i18n="start.subtitle">Instale a biblioteca e rode seu primeiro operador.</p>
+          </div>
+          <div class="grid two">
+            <div>
+              <h3 data-i18n="start.install">Instalação</h3>
+              <pre><code class="code-block">pkg&gt; add SpectralLib</code></pre>
+              <p>
+                A biblioteca expõe os módulos <code>Chebyshev</code>,
+                <code>Legendre</code>, <code>Fourier</code> e <code>Generic</code>.
+                Todos os símbolos principais são reexportados em
+                <code>using SpectralLib</code>.
+              </p>
+            </div>
+            <div>
+              <h3 data-i18n="start.first">Primeiro passo</h3>
+              <pre><code class="code-block">using SpectralLib
+
+x = [-1.0, 0.0, 1.0]
+B = Base_Legendre_n(3, x)
+D = DS_Legendre(3)
+
+z, w = ChebyQuadrature(-1, 1, 4, 2)
+f̂ = B * cos.(x)
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section id="bases" class="card">
+          <div class="section-header">
+            <h2 data-i18n="bases.title">Bases espectrais</h2>
+            <p data-i18n="bases.subtitle">API consistente para polinômios ortogonais e séries trigonométricas.</p>
+          </div>
+          <div class="grid three">
+            <article class="panel" id="chebyshev">
+              <h3>Chebyshev</h3>
+              <p data-i18n="bases.chebyshev">
+                Transformada direta/inversa via FFT real, nós de Gauss/Lobatto/Radau
+                e matrizes de diferenciação modais.
+              </p>
+              <pre><code class="code-block">spec = ChebyshevTransform([1,0,-1,0.5], 1, 1)
+D = DS_Cheby(4)
+z, w = ChebyQuadrature(-1, 1, 6, 2)
+</code></pre>
+            </article>
+            <article class="panel" id="legendre">
+              <h3>Legendre</h3>
+              <p data-i18n="bases.legendre">
+                Bases de Gauss, Lobatto e Radau, matrizes de integração e
+                multiplicação e avaliação recursiva dos polinômios.
+              </p>
+              <pre><code class="code-block">BL, BI, xG, wG = Legendre_Gauss_Basis(3)
+J = JS_Leg(3)
+</code></pre>
+            </article>
+            <article class="panel" id="fourier">
+              <h3>Fourier</h3>
+              <p data-i18n="bases.fourier">
+                Diferenciação espectral, interpolação trigonométrica e quadratura
+                para funções periódicas.
+              </p>
+              <pre><code class="code-block">x, D = fourdif(9, 1)
+vals = real_fft(sin.(x))
+</code></pre>
+            </article>
+          </div>
+        </section>
+
+        <section id="examples" class="card">
+          <div class="section-header">
+            <h2 data-i18n="examples.title">Exemplos</h2>
+            <p data-i18n="examples.subtitle">Exemplos extraídos diretamente de <code>examples/examples.jl</code>.</p>
+            <p class="muted" id="examples-status" data-i18n="examples.status-loading">Carregando exemplos…</p>
+          </div>
+          <div id="examples-list" class="example-grid"></div>
+        </section>
+
+        <section id="api" class="card">
+          <div class="section-header">
+            <h2 data-i18n="api.title">Referência da API</h2>
+            <p data-i18n="api.subtitle">Principais funções expostas pela biblioteca.</p>
+          </div>
+          <div class="grid two">
+            <div>
+              <h3>Chebyshev</h3>
+              <ul>
+                <li><code>ChebyshevTransform(y, type, direction)</code></li>
+                <li><code>ChebyQuadrature(a, b, n, tipo)</code></li>
+                <li><code>DS_Cheby(n)</code></li>
+                <li><code>Base_Cheby_n(n, x)</code></li>
+                <li><code>M_Prod_Cheby(ah)</code></li>
+                <li><code>ChebyNodes(n, opt)</code></li>
+                <li><code>JS_Cheb(N)</code></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Legendre</h3>
+              <ul>
+                <li><code>Legendre_Gauss_Basis(n)</code></li>
+                <li><code>Legendre_Lobatto_Basis(n)</code></li>
+                <li><code>Legendre_Radau_BasisL(n)</code></li>
+                <li><code>Legendre_Radau_BasisR(n)</code></li>
+                <li><code>eval_legendre(n, x)</code></li>
+                <li><code>GaussQuadTypes(a, b, n; tipo)</code></li>
+                <li><code>DS_Legendre(n)</code></li>
+                <li><code>Base_Legendre_n(n, x)</code></li>
+                <li><code>M_Prod_Legendre(ah)</code></li>
+                <li><code>JS_Leg(N)</code></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Fourier</h3>
+              <ul>
+                <li><code>DS_Fourier(M)</code></li>
+                <li><code>fourdif(N, m)</code></li>
+                <li><code>Multi_Diff_Mat(N, m_max)</code></li>
+                <li><code>Bary_Trig_Mat(fk, x)</code></li>
+                <li><code>JS_Fourier(M)</code></li>
+                <li><code>fourier_quad(f, N)</code></li>
+                <li><code>fourier_quad(y)</code></li>
+                <li><code>real_fft(y)</code></li>
+                <li><code>real_ifft(Y)</code></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Generic</h3>
+              <ul>
+                <li><code>Bary_Interp(xk, fk, xnew)</code></li>
+                <li><code>Generalized_Diff_Mat(xs)</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="tab-panel hidden" data-tab-panel="theory">
+    <main class="layout" id="theory">
+      <aside class="sidebar">
+        <div class="search">
+          <input type="search" placeholder="Buscar teoria" aria-label="Search" data-i18n="search.theory" />
+        </div>
+        <div class="toc">
+          <h3 data-i18n="sidebar.theory">Trilha</h3>
+          <ul>
+            <li><a href="#fundamentos" data-tab-target="theory" data-i18n="toc.fundamentals">Fundamentos</a></li>
+            <li><a href="#chebyshev-theory" data-tab-target="theory">Chebyshev</a></li>
+            <li><a href="#legendre-theory" data-tab-target="theory">Legendre</a></li>
+            <li><a href="#fourier-theory" data-tab-target="theory">Fourier</a></li>
+            <li><a href="#generic-theory" data-tab-target="theory" data-i18n="toc.generic">Operadores genéricos</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="theory-hero" id="fundamentos">
+          <div>
+            <p class="eyebrow" data-i18n="theory.eyebrow">Fundamentos</p>
+            <h1 data-i18n="theory.title">Intuição por trás dos métodos espectrais</h1>
+            <p class="lede" data-i18n="theory.lede">
+              Expansões em bases ortogonais transformam derivadas e integrais em
+              operações matriciais simples. A SpectralLib.jl oferece operadores
+              otimizados que seguem a teoria clássica: projeção, quadratura e
+              diferenciação em espaços funcionais.
+            </p>
+            <div class="meta">
+              <span class="tag">𝛴 L²</span>
+              <span class="tag">FFT</span>
+              <span class="tag" data-i18n="theory.tag-convergence">Convergência exponencial</span>
+            </div>
+          </div>
+          <div class="figure-grid">
+            <div class="figure-card">
+              <div class="quote" data-i18n="theory.quote">
+                "A precisão vem do casamento entre ortogonalidade e quadraturas
+                exatas: a transformada converte função em coeficientes, a
+                quadratura captura integrais sem perdas."
+              </div>
+            </div>
+            <div class="figure-card">
+              <div class="gif-box" aria-label="Animação de modos espectrais">
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="wave-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                      <stop offset="0%" stop-color="#9d4edd" />
+                      <stop offset="100%" stop-color="#4dd0e1" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="520" height="180" fill="url(#wave-gradient)">
+                    <animate attributeName="x" from="0" to="-260" dur="6s" repeatCount="indefinite" />
+                  </rect>
+                  <g stroke="#0b1220" stroke-width="3" fill="none" opacity="0.75">
+                    <path>
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 90 Q60 40 120 90 T240 90 T360 90 T480 90;M0 90 Q60 140 120 90 T240 90 T360 90 T480 90;M0 90 Q60 40 120 90 T240 90 T360 90 T480 90" />
+                    </path>
+                    <path>
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 90 Q80 130 160 90 T320 90 T480 90;M0 90 Q80 50 160 90 T320 90 T480 90;M0 90 Q80 130 160 90 T320 90 T480 90" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="theory.gif-label">GIF espectral</strong>
+              </div>
+              <p class="muted" data-i18n="theory.gif-caption">Ondas deslizando representam como os modos base se combinam.</p>
+            </div>
+          </div>
+        </div>
+
+        <section id="chebyshev-theory" class="card">
+          <div class="section-header">
+            <h2>Chebyshev</h2>
+            <p data-i18n="cheb.summary">Polinômios Tₙ(x) formam uma base ortogonal em [-1,1] com peso (1-x²)^(-1/2).</p>
+          </div>
+          <div class="theory-grid">
+            <div class="equation-box">
+              <h3 data-i18n="cheb.expansion">Expansão modal</h3>
+              <div class="equation">\[ f(x) \approx \sum_{n=0}^{N} a_n T_n(x) \]</div>
+              <ul class="theory-list">
+                <li data-i18n="cheb.fft">Transformada usa FFT real: complexidade O(N log N).</li>
+                <li data-i18n="cheb.roots">Nós de Gauss/Lobatto minimizam o erro de interpolação.</li>
+                <li data-i18n="cheb.diff">Matrizes de diferenciação convergem rapidamente para funções suaves.</li>
+              </ul>
+            </div>
+            <div class="figure-card">
+              <img alt="Polinômios de Chebyshev" src="data:image/svg+xml,%3Csvg width='520' height='260' viewBox='0 0 520 260' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='520' height='260' fill='%230b1220'/%3E%3Cpath d='M20 130 Q80 30 140 130 T260 130 T380 130 T500 130' stroke='%23ff7ae6' stroke-width='4' fill='none'/%3E%3Cpath d='M20 130 Q80 90 140 170 T260 90 T380 170 T500 90' stroke='%23a5b4fc' stroke-width='3' fill='none'/%3E%3Cpath d='M20 130 Q80 130 140 130 T260 130 T380 130 T500 130' stroke='%234dd0e1' stroke-width='3' fill='none'/%3E%3Ctext x='26' y='26' fill='%23c7d2fe' font-family='Inter' font-size='16'>T₀, T₁, T₂…</text%3E%3C/svg%3E" />
+              <p class="muted" data-i18n="cheb.fig">Modos alternados controlam oscilações próximas aos extremos.</p>
+            </div>
+            <div class="figure-card">
+              <div class="gif-box" aria-label="Aliasing e filtragem">
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="cheb-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                      <stop offset="0%" stop-color="#4dd0e1" />
+                      <stop offset="100%" stop-color="#9d4edd" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <path stroke="url(#cheb-gradient)" stroke-width="5" fill="none">
+                    <animate attributeName="d" dur="4.5s" repeatCount="indefinite"
+                      values="M0 90 Q70 30 140 90 T280 90 T420 90 T560 90;M0 90 Q70 150 140 90 T280 90 T420 90 T560 90;M0 90 Q70 30 140 90 T280 90 T420 90 T560 90" />
+                  </path>
+                  <path stroke="#c7d2fe" stroke-width="2" stroke-dasharray="6 8" fill="none">
+                    <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M0 120 L520 120;M0 60 L520 60;M0 120 L520 120" />
+                  </path>
+                </svg>
+                <strong class="gif-label" data-i18n="cheb.aliased">Anti-aliasing</strong>
+              </div>
+              <p class="muted" data-i18n="cheb.aliased-caption">Filtrar modos altos evita Gibbs ao reconstruir sinais não suaves.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="legendre-theory" class="card">
+          <div class="section-header">
+            <h2>Legendre</h2>
+            <p data-i18n="leg.summary">Polinômios Pₙ(x) são ortogonais em [-1,1] com peso 1, fornecendo quadraturas exatas para integrais polinomiais.</p>
+          </div>
+          <div class="theory-grid">
+            <div class="equation-box">
+              <h3 data-i18n="leg.recursion">Recorrência</h3>
+              <div class="equation">\[ (n+1) P_{n+1}(x) = (2n+1) \, x \, P_n(x) - n P_{n-1}(x) \]</div>
+              <ul class="theory-list">
+                <li data-i18n="leg.mass">Bases de Gauss/Lobatto geram matrizes de massa diagonais.</li>
+                <li data-i18n="leg.integration">Integração espectral usa integrais exatas dos polinômios.</li>
+                <li data-i18n="leg.boundary">Lobatto preserva informações nas fronteiras, ideal para condições de contorno.</li>
+              </ul>
+            </div>
+            <div class="figure-card">
+              <img alt="Nós de Gauss-Lobatto" src="data:image/svg+xml,%3Csvg width='520' height='220' viewBox='0 0 520 220' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='520' height='220' fill='%230b1220'/%3E%3Cline x1='40' y1='110' x2='480' y2='110' stroke='%23e5ecf5' stroke-width='2'/%3E%3Ccircle cx='40' cy='110' r='8' fill='%234dd0e1'/%3E%3Ccircle cx='120' cy='110' r='8' fill='%239d4edd'/%3E%3Ccircle cx='200' cy='110' r='8' fill='%234dd0e1'/%3E%3Ccircle cx='280' cy='110' r='8' fill='%239d4edd'/%3E%3Ccircle cx='360' cy='110' r='8' fill='%234dd0e1'/%3E%3Ccircle cx='440' cy='110' r='8' fill='%239d4edd'/%3E%3Ctext x='24' y='32' fill='%23c7d2fe' font-family='Inter' font-size='16'>Nós de Gauss-Lobatto</text%3E%3C/svg%3E" />
+              <p class="muted" data-i18n="leg.fig">Distribuição concentra pontos nas extremidades para capturar camadas de fronteira.</p>
+            </div>
+            <div class="figure-card">
+              <div class="gif-box" aria-label="Fluxo conservativo">
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g fill="none" stroke-width="4">
+                    <path stroke="#4dd0e1">
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 140 Q130 100 260 140 T520 140;M0 140 Q130 40 260 140 T520 140;M0 140 Q130 100 260 140 T520 140" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 60 Q130 100 260 60 T520 60;M0 60 Q130 140 260 60 T520 60;M0 60 Q130 100 260 60 T520 60" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="leg.conservation">Fluxos</strong>
+              </div>
+              <p class="muted" data-i18n="leg.conservation-caption">Galerkin de Legendre mantém conservação em formulações fracas.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="fourier-theory" class="card">
+          <div class="section-header">
+            <h2>Fourier</h2>
+            <p data-i18n="four.summary">Séries complexas e reais representam funções periódicas; derivar é multiplicar coeficientes por i k.</p>
+          </div>
+          <div class="theory-grid">
+            <div class="equation-box">
+              <h3 data-i18n="four.series">Série periódica</h3>
+              <div class="equation">\[ f(x) = \sum_{k=-N}^{N} \hat{f}_k e^{i k x}, \quad f'(x) = \sum_{k=-N}^{N} i k \hat{f}_k e^{i k x} \]</div>
+              <ul class="theory-list">
+                <li data-i18n="four.fft">FFT reduz o custo de projeção para O(N log N).</li>
+                <li data-i18n="four.aliasing">Truncamento atua como filtro de banda: controla aliasing.</li>
+                <li data-i18n="four.quad">Quadraturas trapezoidais são espectralmente exatas para funções suaves e periódicas.</li>
+              </ul>
+            </div>
+            <div class="figure-card">
+              <img alt="Fases harmônicas" src="data:image/svg+xml,%3Csvg width='520' height='220' viewBox='0 0 520 220' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='520' height='220' fill='%230b1220'/%3E%3Cpath d='M20 110 Q60 30 100 110 T180 110 T260 110 T340 110 T420 110 T500 110' stroke='%239d4edd' stroke-width='3' fill='none'/%3E%3Cpath d='M20 110 Q80 170 140 110 T260 110 T380 110 T500 110' stroke='%234dd0e1' stroke-width='3' fill='none'/%3E%3Ctext x='24' y='32' fill='%23c7d2fe' font-family='Inter' font-size='16'>Harmônicos k e -k</text%3E%3C/svg%3E" />
+              <p class="muted" data-i18n="four.fig">Fases conjugadas criam formas reais a partir de coeficientes complexos.</p>
+            </div>
+            <div class="figure-card">
+              <div class="gif-box" aria-label="Espaço-frequência animado">
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g stroke-width="4" fill="none">
+                    <path stroke="#4dd0e1" stroke-dasharray="8 10">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 90 Q70 40 140 90 T280 90 T420 90 T560 90;M0 90 Q70 140 140 90 T280 90 T420 90 T560 90;M0 90 Q70 40 140 90 T280 90 T420 90 T560 90" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="3.5s" repeatCount="indefinite"
+                        values="M0 90 Q90 130 180 90 T360 90 T540 90;M0 90 Q90 50 180 90 T360 90 T540 90;M0 90 Q90 130 180 90 T360 90 T540 90" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="four.spectrum">Domínio frequencial</strong>
+              </div>
+              <p class="muted" data-i18n="four.spectrum-caption">Visualize energia migrando entre frequências após derivar ou filtrar.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="generic-theory" class="card">
+          <div class="section-header">
+            <h2 data-i18n="generic.title">Operadores genéricos</h2>
+            <p data-i18n="generic.summary">Diferenciação, integração e multiplicação espectral unificam Chebyshev, Legendre e Fourier.</p>
+          </div>
+          <div class="theory-grid">
+            <div class="equation-box">
+              <h3 data-i18n="generic.operators">Operadores</h3>
+              <div class="equation">\[ D f = V \Lambda V^{-1} f, \quad M_f g = V \operatorname{diag}(f) V^{-1} g \]</div>
+              <ul class="theory-list">
+                <li data-i18n="generic.stability">Pré-condicionamento modal reduz números de condição.</li>
+                <li data-i18n="generic.integration">Operadores de integração acumulam coeficientes com pesos 1/k.</li>
+                <li data-i18n="generic.maps">Mapeamentos afins reposicionam nós para domínios [a,b].</li>
+              </ul>
+            </div>
+            <div class="figure-card">
+              <img alt="Mapa afim" src="data:image/svg+xml,%3Csvg width='520' height='220' viewBox='0 0 520 220' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='520' height='220' fill='%230b1220'/%3E%3Cline x1='60' y1='160' x2='460' y2='60' stroke='%234dd0e1' stroke-width='4' marker-end='url(%23arrow)'/%3E%3Cdefs%3E%3Cmarker id='arrow' viewBox='0 0 10 10' refX='5' refY='5' markerWidth='6' markerHeight='6' orient='auto-start-reverse'%3E%3Cpath d='M 0 0 L 10 5 L 0 10 z' fill='%239d4edd'/%3E%3C/marker%3E%3C/defs%3E%3Ctext x='70' y='50' fill='%23c7d2fe' font-family='Inter' font-size='16'>x → ξ(x)</text%3E%3C/svg%3E" />
+              <p class="muted" data-i18n="generic.fig">Transformações lineares empurram os nós de referência para qualquer intervalo.</p>
+            </div>
+            <div class="figure-card">
+              <div class="gif-box" aria-label="Interação entre bases">
+                <svg viewBox="0 0 520 180" role="img" aria-hidden="true">
+                  <rect x="0" y="0" width="520" height="180" fill="#0b1220" />
+                  <g stroke-width="4" fill="none">
+                    <path stroke="#4dd0e1">
+                      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+                        values="M0 120 Q120 80 240 120 T480 120;M0 120 Q120 40 240 120 T480 120;M0 120 Q120 80 240 120 T480 120" />
+                    </path>
+                    <path stroke="#9d4edd">
+                      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+                        values="M0 60 Q120 100 240 60 T480 60;M0 60 Q120 140 240 60 T480 60;M0 60 Q120 100 240 60 T480 60" />
+                    </path>
+                  </g>
+                </svg>
+                <strong class="gif-label" data-i18n="generic.blend">Híbrido</strong>
+              </div>
+              <p class="muted" data-i18n="generic.blend-caption">Combinar bases permite domínio periódico em x e polinomial em y.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/examples.js"></script>
+  <script src="assets/script.js"></script>
+</body>
+</html>
